@@ -1,8 +1,9 @@
 #include <widget.h>
+#include <gui.h>
 
 Widget::Widget(Gui *_gui, int x, int y)
-	: gui(_gui), screen(nullptr), position(x, y), size(0, 0),
-	clickable(false), size_known(false), drawn(false) {}
+	: gui(_gui), screen(nullptr), parent(nullptr), position(x, y),
+	size(0, 0), clickable(false), size_known(false), drawn(false) {}
 Widget::Widget() : Widget(nullptr, 0, 0) {}
 Widget::Widget(int x, int y) : Widget(nullptr, x, y) {}
 
@@ -25,4 +26,12 @@ Widget::rect()
 	return Rect(position.x, position.y, size.x, size.y);
 }
 
+void
+Widget::add_widget(Widget *widget)
+{
+	widgets.push_back(widget);
+	widget->parent = this;
+	widget->screen = screen;
+	widget->gui = gui;
+}
 

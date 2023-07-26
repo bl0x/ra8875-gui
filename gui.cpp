@@ -2,7 +2,8 @@
 #include <screen.h>
 
 Gui::Gui()
-  : screen(nullptr), screen_index(-1), verbosity(GV_INFO), uart(&Serial)
+  : screen(nullptr), next_screen_index(-1)
+  , screen_index(-1), verbosity(GV_INFO), uart(&Serial)
   , last_loop(0), min_interval(1000 / GUI_MAX_LOOP_FREQ_HZ)
   , touch_interval(GUI_MIN_TOUCH_INTERVAL_MILLISECONDS), touched(false)
 #ifdef USE_SUMOTOY
@@ -61,13 +62,20 @@ Gui::add_screen(int index, Screen *screen)
 }
 
 void
-Gui::change(int index)
+Gui::do_change()
 {
-	info("Change to screen "); infoln(index);
-	auto r = screens.find(index);
+	info("Change to screen "); infoln(next_screen_index);
+	auto r = screens.find(next_screen_index);
 	screen_index = r->first;
 	screen = r->second;
 	screen->redraw_all();
+}
+
+void
+Gui::change(int index)
+{
+	info("Schedule change to screen "); infoln(index);
+	next_screen_index = index;
 }
 
 void
@@ -82,7 +90,12 @@ Gui::loop(void)
 
 	last_loop = now;
 
-	info("GUI loop: "); infoln(now);
+	debug("GUI loop: "); debugln(now);
+
+	/* check, if screen change was scheduled */
+	if (next_screen_index != screen_index) {
+		do_change();
+	}
 
 	/* check touchpad */
 	Point2 pos;

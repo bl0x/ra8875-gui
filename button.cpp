@@ -2,8 +2,9 @@
 #include <button.h>
 #include <gui.h>
 
-Button::Button(int x, int y, const char *_text, on_click_function f)
-	: Widget(x, y), clicked(f)
+Button::Button(int x, int y, const char *_text, on_click_function f,
+    void *_data)
+	: Widget(x, y), clicked(f), data(_data)
 	, color_button(GUI_BUTTON_DEFAULT_COLOR_BUTTON)
 	, color_text(GUI_BUTTON_DEFAULT_COLOR_TEXT)
 	, pad(5, 5)
@@ -47,6 +48,6 @@ Button::handle_touch(Point2 pos)
 {
 	gui->info("Button pressed: "); gui->infoln(text);
 	if (clicked != nullptr) {
-		clicked();
+		clicked(data);
 	}
 }

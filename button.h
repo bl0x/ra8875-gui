@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <widget.h>
 
-typedef void(*on_click_function)(void);
+typedef void(*on_click_function)(void *);
 
 #define GUI_BUTTON_DEFAULT_COLOR_BUTTON RA8875_WHITE
 #define GUI_BUTTON_DEFAULT_COLOR_TEXT   RA8875_BLACK
@@ -10,7 +10,7 @@ typedef void(*on_click_function)(void);
 class Button : public Widget
 {
 	public:
-	Button(int x, int y, const char *text, on_click_function);
+	Button(int x, int y, const char *text, on_click_function, void *data);
 
 	void set_text(const char *_text) {
 		text_len = strlen(_text);
@@ -31,6 +31,7 @@ class Button : public Widget
 	const char *text;
 	int text_len;
 	on_click_function clicked;
+	void *data;
 
 	uint16_t color_button;
 	uint16_t color_text;

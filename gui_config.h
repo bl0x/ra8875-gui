@@ -1,10 +1,10 @@
 #pragma once
-#define RA8875_RESET 21
-#define RA8875_INT   20
+#define RA8875_SCLK  22
+#define RA8875_CS    21
+#define RA8875_MISO  20
 #define RA8875_MOSI  19
-#define RA8875_SCLK  18
-#define RA8875_CS    17
-#define RA8875_MISO  16
+#define RA8875_RESET 18
+#define RA8875_INT   17
 #define RA8875_DISPLAY Adafruit_800x480
 
 #define GUI_MAX_LOOP_FREQ_HZ 5

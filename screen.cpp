@@ -19,6 +19,27 @@ Screen::draw()
 	}
 #endif
 
+	if (gui->last_loop - last_processed > process_interval) {
+		process();
+		last_processed = gui->last_loop;
+	}
+
+	if (title && show_title) {
+		if (gui->last_loop - last_title_update >
+		    1000 * SCREEN_TITLE_REFRESH_SECONDS) {
+			title->draw();
+			last_title_update = gui->last_loop;
+		}
+	}
+
+	if (status && show_status) {
+		if (gui->last_loop - last_status_update >
+		    1000 * SCREEN_STATUS_REFRESH_SECONDS) {
+			status->draw();
+			last_status_update = gui->last_loop;
+		}
+	}
+
 	for (auto w : widgets) {
 		if (!w->drawn) {
 			w->calc_size();

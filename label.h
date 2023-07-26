@@ -1,4 +1,6 @@
 #pragma once
+#include <stdint.h>
+#include <string.h>
 #include <widget.h>
 
 #define GUI_LABEL_DEFAULT_COLOR_BACKGROUND RA8875_BLACK

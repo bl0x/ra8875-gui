@@ -30,6 +30,7 @@ class Gui
 	bool begin(void);
 	void add_screen(int index, Screen *screen);
 	void change(int index);
+	void do_change();
 	void loop(void);
 	void handle_touch(Point2 pos);
 	Point2 calibrate(uint16_t x, uint16_t y);
@@ -45,6 +46,7 @@ class Gui
 
 	std::map<int, Screen *>screens;
 	Screen *screen;
+	int next_screen_index;
 	int screen_index;
 	int verbosity;
 	SerialUSB *uart;

@@ -19,10 +19,14 @@ class Widget
 
 	Rect rect(void);
 	bool is_at(Point2 pos);
+	void add_widget(Widget *widget);
+	virtual void build(void) {}
+	virtual void update(void *) {}
 
 	Gui *gui;
 	Screen *screen;
-	std::vector<Widget *>children;	
+	Widget *parent;
+	std::vector<Widget *>widgets;	
 	Point2 position;
 	Point2 size;
 	bool clickable;
