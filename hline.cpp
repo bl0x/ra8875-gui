@@ -11,10 +11,10 @@ HLine::HLine(int x, int y, int length, int width, uint16_t _color)
 void
 HLine::draw()
 {
-	gui->infoln("HLine draw begin.");
+	gui->debugln("HLine draw begin.");
 	gui->tft.graphicsMode();
 	gui->tft.fillRect(position.x, position.y, size.x, size.y, color);
-	gui->infoln("HLine draw end.");
+	gui->debugln("HLine draw end.");
 	drawn = true;
 }
 

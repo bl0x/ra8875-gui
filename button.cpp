@@ -17,8 +17,8 @@ Button::Button(int x, int y, const char *_text, on_click_function f,
 void
 Button::draw()
 {
-	gui->infoln("Button draw begin.");
-	gui->info("  text = "); gui->infoln(text);
+	gui->debugln("Button draw begin.");
+	gui->debug("  text = "); gui->debugln(text);
 	gui->tft.graphicsMode();
 	gui->tft.setCursor(position.x, position.y);
 	gui->tft.fillRect(position.x, position.y, size.x, size.y,
@@ -29,7 +29,7 @@ Button::draw()
 	gui->tft.textTransparent(color_text);
 	gui->tft.textWrite(text);
 	gui->tft.textEnlarge(GUI_TEXT_SCALE_NORMAL);
-	gui->infoln("Button draw end.");
+	gui->debugln("Button draw end.");
 	drawn = true;
 }
 

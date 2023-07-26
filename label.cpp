@@ -16,15 +16,15 @@ Label::Label(int x, int y, const char *_text)
 void
 Label::draw()
 {
-	gui->infoln("Label draw begin.");
-	gui->info("  text = "); gui->infoln(text);
+	gui->debugln("Label draw begin.");
+	gui->debug("  text = "); gui->debugln(text);
 	gui->tft.textMode();
 	gui->tft.textEnlarge(scale);
 	gui->tft.textSetCursor(position.x, position.y);
 	gui->tft.textColor(color_text, color_background);
 	gui->tft.textWrite(text);
 	gui->tft.textEnlarge(GUI_TEXT_SCALE_NORMAL);
-	gui->infoln("Label draw end.");
+	gui->debugln("Label draw end.");
 	drawn = true;
 }
 
