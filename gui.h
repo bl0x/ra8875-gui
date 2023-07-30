@@ -28,6 +28,7 @@ class Gui
 	public:
 	Gui(void);
 	bool begin(void);
+	void set_data(void *data);
 	void add_screen(int index, Screen *screen);
 	void change(int index);
 	void do_change();
@@ -50,6 +51,7 @@ class Gui
 	int screen_index;
 	int verbosity;
 	SerialUSB *uart;
+	void *data;
 
 	unsigned long last_loop;
 	unsigned long last_touched;

@@ -3,7 +3,7 @@
 
 Gui::Gui()
   : screen(nullptr), next_screen_index(-1)
-  , screen_index(-1), verbosity(GV_INFO), uart(&Serial)
+  , screen_index(-1), verbosity(GV_INFO), uart(&Serial), data(nullptr)
   , last_loop(0), min_interval(1000 / GUI_MAX_LOOP_FREQ_HZ)
   , touch_interval(GUI_MIN_TOUCH_INTERVAL_MILLISECONDS), touched(false)
 #ifdef USE_SUMOTOY
@@ -50,6 +50,12 @@ Gui::begin()
 #endif
 
 	return true;
+}
+
+void
+Gui::set_data(void *_data)
+{
+	data = _data;
 }
 
 void

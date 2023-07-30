@@ -48,6 +48,6 @@ Button::handle_touch(Point2 pos)
 {
 	gui->info("Button pressed: "); gui->infoln(text);
 	if (clicked != nullptr) {
-		clicked(data);
+		clicked(this, data);
 	}
 }
