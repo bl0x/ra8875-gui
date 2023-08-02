@@ -26,7 +26,7 @@ class Widget
 	Gui *gui;
 	Screen *screen;
 	Widget *parent;
-	std::vector<Widget *>widgets;	
+	std::vector<Widget *>widgets;
 	Point2 position;
 	Point2 size;
 	bool clickable;
