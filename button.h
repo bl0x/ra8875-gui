@@ -19,13 +19,17 @@ class Button : public Widget
 		text_len = strlen(_text);
 		text = _text;
 		size_known = false;
+		drawn = false;
 	}
 	void set_scale(uint8_t _scale) {
 		scale = _scale;
+		size_known = false;
+		drawn = false;
 	}
 	void set_color(uint16_t text, uint16_t button) {
 		color_text = text;
 		color_button = button;
+		drawn = false;
 	}
 	void draw(void);
 	void handle_touch(Point2 pos);

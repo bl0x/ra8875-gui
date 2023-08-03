@@ -1,29 +1,32 @@
 #include <graph.h>
 #include <gui.h>
 
+/* TODO: autoscale ? */
+
 Graph::Graph(int x, int y, int _width, int _height)
 	: Widget(x, y), width(_width), height(_height)
 	, n_gridlines(3)
 	, color_bg(GUI_GRAPH_DEFAULT_COLOR_BG)
 	, color_grid(GUI_GRAPH_DEFAULT_COLOR_GRID)
 	, color_axes(GUI_GRAPH_DEFAULT_COLOR_AXES)
-	, color_line {
-	    GUI_GRAPH_DEFAULT_COLOR_LINE1,
-	    GUI_GRAPH_DEFAULT_COLOR_LINE2,
-	    GUI_GRAPH_DEFAULT_COLOR_LINE3,
-	    GUI_GRAPH_DEFAULT_COLOR_LINE4}
-{}
+	, xmin(0), xmax(1), ymin(0), ymax(1), xscale(1), yscale(1)
+{
+	lines[0].color = GUI_GRAPH_DEFAULT_COLOR_LINE1;
+	lines[1].color = GUI_GRAPH_DEFAULT_COLOR_LINE2;
+	lines[2].color = GUI_GRAPH_DEFAULT_COLOR_LINE3;
+	lines[3].color = GUI_GRAPH_DEFAULT_COLOR_LINE4;
+}
 
 void
 Graph::draw()
 {
-	gui->infoln("Graph draw begin.");
+	gui->debugln("Graph draw begin.");
 	draw_bg();
 	draw_grid();
 	draw_axes();
 	draw_lines();
 	drawn = true;
-	gui->infoln("Graph draw end.");
+	gui->debugln("Graph draw end.");
 }
 
 void
@@ -57,10 +60,10 @@ Graph::draw_grid()
 		n_x = n_gridlines * aspect;
 	}
 
-	gui->info("grid lines n_x=");
-	gui->info(n_x);
-	gui->info(" n_y=");
-	gui->infoln(n_y);
+	gui->debug("grid lines n_x=");
+	gui->debug(n_x);
+	gui->debug(" n_y=");
+	gui->debugln(n_y);
 
 	gui->tft.graphicsMode();
 
@@ -94,6 +97,49 @@ Graph::draw_axes()
 }
 
 void
+Graph::draw_lines()
+{
+	for (int i = 0; i < GRAPH_MAX_LINES; ++i) {
+		draw_line(i);
+	}
+}
+
+Point2
+Graph::transform(float a, float b)
+{
+	int x, y;
+	x = position.x + (a - xmin) * xscale;
+	y = position.y + size.y - ((b - ymin) * yscale);
+	return {x, y};
+}
+
+void
+Graph::draw_line(int i)
+{
+	auto line = lines[i];
+	Point2 p;
+	int xprev, yprev;
+	if (line.size == 0) {
+		return;
+	}
+	gui->tft.graphicsMode();
+	p = transform(line.xs[0], line.ys[0]);
+	gui->tft.setCursor(p.x, p.y);
+	xprev = p.x;
+	yprev = p.y;
+	for (int i = 1; i < line.size; ++i) {
+		p = transform(line.xs[i], line.ys[i]);
+		if (p.x != xprev) {
+			gui->tft.drawLine(xprev, yprev, p.x, p.y, line.color);
+			xprev = p.x;
+			yprev = p.y;
+		} else {
+			/* remember min/max */
+		}
+	}
+}
+
+void
 Graph::calc_size()
 {
 	size.x = width;
@@ -105,3 +151,4 @@ void
 Graph::handle_touch(Point2 pos)
 {
 }
+

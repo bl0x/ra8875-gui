@@ -17,7 +17,8 @@ void
 Label::draw()
 {
 	gui->debugln("Label draw begin.");
-	gui->debug("  text = "); gui->debugln(text);
+	gui->debug("  text = ");
+	gui->debugln(text);
 	gui->tft.textMode();
 	gui->tft.textEnlarge(scale);
 	gui->tft.textSetCursor(position.x, position.y);

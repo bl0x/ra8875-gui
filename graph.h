@@ -2,6 +2,8 @@
 #include <widget.h>
 #include <stdint.h>
 
+struct Point2;
+
 #define RA8875_ORANGE TO565(0xff, 0x88, 0x00)
 
 #define GUI_GRAPH_DEFAULT_COLOR_BG    RA8875_BLACK
@@ -13,6 +15,30 @@
 #define GUI_GRAPH_DEFAULT_COLOR_LINE4 RA8875_CYAN
 
 #define GRAPH_MAX_LINES 4
+
+class GraphLine
+{
+	public:
+	GraphLine() : xs(), ys(), size(0), color(0) {}
+	std::vector<float> xs;
+	std::vector<float> ys;
+	size_t size;
+	uint16_t color;
+
+	void clear()
+	{
+		xs.clear();
+		ys.clear();
+		size = 0;
+	}
+
+	void add_point(float x, float y)
+	{
+		xs.push_back(x);
+		ys.push_back(y);
+		size++;
+	}
+};
 
 class Graph : public Widget
 {
@@ -28,13 +54,50 @@ class Graph : public Widget
 	void draw_grid(void);
 	void draw_axes(void);
 	void draw_lines(void);
+	void draw_line(int i);
+	Point2 transform(float a, float b);
+
+	void clear(int i)
+	{
+		lines[i].clear();
+		drawn = false;
+	}
+	void add_point(int i, float x, float y)
+	{
+		lines[i].add_point(x, y);
+		drawn = false;
+	}
+
+
+	void set_xrange(float min, float max) {
+		if ((max - min) <= 0) {
+			return;
+		}
+		xmin = min;
+		xmax = max;
+		xscale = size.x / (max - min);
+	}
+	void set_yrange(float min, float max) {
+		if ((max - min) <= 0) {
+			return;
+		}
+		ymin = min;
+		ymax = max;
+		yscale = size.y / (max - min);
+	}
 
 	int width;
 	int height;
 	int n_gridlines;
 
+	float xmin, xmax;
+	float ymin, ymax;
+	float xscale;
+	float yscale;
+
 	uint16_t color_bg;
 	uint16_t color_grid;
 	uint16_t color_axes;
-	uint16_t color_line[GRAPH_MAX_LINES];
+
+	GraphLine lines[GRAPH_MAX_LINES];
 };
