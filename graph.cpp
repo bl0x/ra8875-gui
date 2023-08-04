@@ -25,6 +25,7 @@ Graph::draw()
 	draw_grid();
 	draw_axes();
 	draw_lines();
+	draw_labels();
 	drawn = true;
 	gui->debugln("Graph draw end.");
 }
@@ -137,6 +138,36 @@ Graph::draw_line(int i)
 			/* remember min/max */
 		}
 	}
+}
+
+void
+Graph::draw_labels()
+{
+	int th = 16;
+	int tw = 8;
+	int pad = 5;
+	int tlx = position.x;
+	int tly = position.y;
+	int blx = tlx;
+	int bly = tly + size.y;
+	int brx = blx + size.x;
+	int bry = bly;
+
+	xmin_text = String((int)xmin) + String("     ");
+	xmax_text = String("     ") + String((int)xmax);
+	ymin_text = String("     ") + String((int)ymin);
+	ymax_text = String("     ") + String((int)ymax);
+
+	gui->tft.textMode();
+	gui->tft.textColor(RA8875_WHITE, RA8875_BLACK);
+	gui->tft.textSetCursor(blx - tw * ymin_text.length() - pad, bly - th);
+	gui->tft.textWrite(ymin_text.c_str());
+	gui->tft.textSetCursor(tlx - tw * ymax_text.length() - pad, tly);
+	gui->tft.textWrite(ymax_text.c_str());
+	gui->tft.textSetCursor(blx, bly + pad);
+	gui->tft.textWrite(xmin_text.c_str());
+	gui->tft.textSetCursor(brx - tw * xmax_text.length(), bry + pad);
+	gui->tft.textWrite(xmax_text.c_str());
 }
 
 void

@@ -1,4 +1,5 @@
 #pragma once
+#include <Arduino.h>
 #include <widget.h>
 #include <stdint.h>
 
@@ -55,6 +56,7 @@ class Graph : public Widget
 	void draw_axes(void);
 	void draw_lines(void);
 	void draw_line(int i);
+	void draw_labels(void);
 	Point2 transform(float a, float b);
 
 	void clear(int i)
@@ -98,6 +100,11 @@ class Graph : public Widget
 	uint16_t color_bg;
 	uint16_t color_grid;
 	uint16_t color_axes;
+
+	String xmin_text;
+	String xmax_text;
+	String ymin_text;
+	String ymax_text;
 
 	GraphLine lines[GRAPH_MAX_LINES];
 };
