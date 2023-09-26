@@ -57,7 +57,7 @@ class Graph : public Widget
 	void draw_lines(void);
 	void draw_line(int i);
 	void draw_labels(void);
-	Point2 transform(float a, float b);
+	Point2 transform(int i, float a, float b);
 
 	void clear(int i)
 	{
@@ -79,13 +79,13 @@ class Graph : public Widget
 		xmax = max;
 		xscale = size.x / (max - min);
 	}
-	void set_yrange(float min, float max) {
+	void set_yrange(int i, float min, float max) {
 		if ((max - min) <= 0) {
 			return;
 		}
-		ymin = min;
-		ymax = max;
-		yscale = size.y / (max - min);
+		ymin[i] = min;
+		ymax[i] = max;
+		yscale[i] = size.y / (max - min);
 	}
 
 	int width;
@@ -93,9 +93,9 @@ class Graph : public Widget
 	int n_gridlines;
 
 	float xmin, xmax;
-	float ymin, ymax;
+	float ymin[GRAPH_MAX_LINES], ymax[GRAPH_MAX_LINES];
 	float xscale;
-	float yscale;
+	float yscale[GRAPH_MAX_LINES];
 
 	uint16_t color_bg;
 	uint16_t color_grid;

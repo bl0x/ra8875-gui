@@ -9,12 +9,17 @@ Graph::Graph(int x, int y, int _width, int _height)
 	, color_bg(GUI_GRAPH_DEFAULT_COLOR_BG)
 	, color_grid(GUI_GRAPH_DEFAULT_COLOR_GRID)
 	, color_axes(GUI_GRAPH_DEFAULT_COLOR_AXES)
-	, xmin(0), xmax(1), ymin(0), ymax(1), xscale(1), yscale(1)
+	, xmin(0), xmax(1), xscale(1)
 {
 	lines[0].color = GUI_GRAPH_DEFAULT_COLOR_LINE1;
 	lines[1].color = GUI_GRAPH_DEFAULT_COLOR_LINE2;
 	lines[2].color = GUI_GRAPH_DEFAULT_COLOR_LINE3;
 	lines[3].color = GUI_GRAPH_DEFAULT_COLOR_LINE4;
+	for (int i = 0; i < GRAPH_MAX_LINES; ++i) {
+		ymin[i] = 0;
+		ymax[i] = 0;
+		yscale[i] = 0;
+	}
 }
 
 void
@@ -106,11 +111,11 @@ Graph::draw_lines()
 }
 
 Point2
-Graph::transform(float a, float b)
+Graph::transform(int i, float a, float b)
 {
 	int x, y;
 	x = position.x + (a - xmin) * xscale;
-	y = position.y + size.y - ((b - ymin) * yscale);
+	y = position.y + size.y - ((b - ymin[i]) * yscale[i]);
 	return {x, y};
 }
 
@@ -119,17 +124,17 @@ Graph::draw_line(int i)
 {
 	auto line = lines[i];
 	Point2 p;
-	int xprev, yprev;
+	int xprev = 0, yprev = 0;
 	if (line.size == 0) {
 		return;
 	}
 	gui->tft.graphicsMode();
-	p = transform(line.xs[0], line.ys[0]);
+	p = transform(i, line.xs[0], line.ys[0]);
 	gui->tft.setCursor(p.x, p.y);
 	xprev = p.x;
 	yprev = p.y;
-	for (int i = 1; i < line.size; ++i) {
-		p = transform(line.xs[i], line.ys[i]);
+	for (int n = 1; n < line.size; ++n) {
+		p = transform(i, line.xs[n], line.ys[n]);
 		if (p.x != xprev) {
 			gui->tft.drawLine(xprev, yprev, p.x, p.y, line.color);
 			xprev = p.x;
@@ -155,8 +160,8 @@ Graph::draw_labels()
 
 	xmin_text = String((int)xmin) + String("     ");
 	xmax_text = String("     ") + String((int)xmax);
-	ymin_text = String("     ") + String((int)ymin);
-	ymax_text = String("     ") + String((int)ymax);
+	ymin_text = String("     ") + String((int)ymin[0]);
+	ymax_text = String("     ") + String((int)ymax[0]);
 
 	gui->tft.textMode();
 	gui->tft.textColor(RA8875_WHITE, RA8875_BLACK);
