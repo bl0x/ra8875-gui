@@ -17,16 +17,27 @@ Button::Button(int x, int y, const char *_text, on_click_function f,
 void
 Button::draw()
 {
+	uint16_t fill_color;
+	uint16_t text_color;
+
+	if (enabled) {
+		fill_color = color_button;
+		text_color = color_text;
+	} else {
+		fill_color = RA8875_GRAY;
+		text_color = RA8875_BLACK;
+	}
+
 	gui->debugln("Button draw begin.");
 	gui->debug("  text = "); gui->debugln(text);
 	gui->tft.graphicsMode();
 	gui->tft.setCursor(position.x, position.y);
 	gui->tft.fillRect(position.x, position.y, size.x, size.y,
-	    color_button);
+	    fill_color);
 	gui->tft.textMode();
 	gui->tft.textEnlarge(scale);
 	gui->tft.textSetCursor(position.x + pad.x, position.y + pad.y);
-	gui->tft.textTransparent(color_text);
+	gui->tft.textTransparent(text_color);
 	gui->tft.textWrite(text);
 	gui->tft.textEnlarge(GUI_TEXT_SCALE_NORMAL);
 	gui->debugln("Button draw end.");
@@ -46,6 +57,10 @@ Button::calc_size()
 void
 Button::handle_touch(Point2 pos)
 {
+	if (!enabled) {
+		gui->info("Button disabled: "); gui->infoln(text);
+		return;
+	}
 	gui->info("Button pressed: "); gui->infoln(text);
 	if (clicked != nullptr) {
 		clicked(this, data);

@@ -16,6 +16,9 @@
     			| ((uint16_t)(g & 0xfc)) << 3 \
 			| ((uint16_t)(b >> 3)))
 
+#define RA8875_ORANGE TO565(0xff, 0x88, 0x00)
+#define RA8875_GRAY   TO565(0x88, 0x88, 0x88)
+
 #define GUI_DEFAULT_FONT_HEIGHT 16
 #define GUI_DEFAULT_FONT_WIDTH   8
 

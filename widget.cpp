@@ -3,7 +3,8 @@
 
 Widget::Widget(Gui *_gui, int x, int y)
 	: gui(_gui), screen(nullptr), parent(nullptr), position(x, y),
-	size(0, 0), clickable(false), size_known(false), drawn(false) {}
+	size(0, 0), clickable(false), size_known(false), drawn(false),
+	enabled(true) {}
 Widget::Widget() : Widget(nullptr, 0, 0) {}
 Widget::Widget(int x, int y) : Widget(nullptr, x, y) {}
 
@@ -35,3 +36,9 @@ Widget::add_widget(Widget *widget)
 	widget->gui = gui;
 }
 
+void
+Widget::set_enabled(bool _enabled)
+{
+	enabled = _enabled;
+	drawn = false;
+}

@@ -20,6 +20,7 @@ class Widget
 	Rect rect(void);
 	bool is_at(Point2 pos);
 	void add_widget(Widget *widget);
+	void set_enabled(bool);
 	virtual void build(void) {}
 	virtual void update(void *) {}
 
@@ -32,4 +33,5 @@ class Widget
 	bool clickable;
 	bool size_known;
 	bool drawn;
+	bool enabled;
 };
