@@ -44,7 +44,8 @@ Scale::draw()
 	    color_border);
 	gui->tft.fillRect(position.x + border_width,
 	    position.y + border_width,
-	    size.x - border_width, size.y - border_width, color_background);
+	    size.x - 2 * border_width, size.y - 2 * border_width,
+	    color_background);
 	/* draw marker */
 	gui->tft.fillRect(
 	    position.x + border_width + border_pad
@@ -99,6 +100,7 @@ Scale::set_min(float _min)
 		return;
 	}
 	min = _min;
+	drawn = false;
 }
 
 void
@@ -108,9 +110,11 @@ Scale::set_max(float _max)
 		return;
 	}
 	max = _max;
+	drawn = false;
 }
 
 void Scale::set_value(float _value)
 {
 	value = _value;
+	drawn = false;
 }

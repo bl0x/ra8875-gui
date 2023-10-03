@@ -3,3 +3,4 @@
 #include <hline.h>
 #include <graph.h>
 #include <progress.h>
+#include <scale.h>

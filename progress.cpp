@@ -27,8 +27,10 @@ Progress::draw()
 	gui->tft.setCursor(position.x, position.y);
 	gui->tft.fillRect(position.x, position.y, size.x, size.y,
 	    color_border);
-	gui->tft.fillRect(position.x + border_width, position.y + border_width,
-	    size.x - border_width, size.y - border_width, color_background);
+	gui->tft.fillRect(
+	    position.x + border_width, position.y + border_width,
+	    size.x - 2 * border_width, size.y - 2 * border_width,
+	    color_background);
 	gui->tft.fillRect(position.x + border_width + border_pad,
 	    position.y + border_width + border_pad,
 	    fill_pixels, max_pixels_y, color_fill);
@@ -57,6 +59,7 @@ Progress::set_min(float _min)
 		return;
 	}
 	min = _min;
+	drawn = false;
 }
 
 void
@@ -66,15 +69,17 @@ Progress::set_max(float _max)
 		return;
 	}
 	max = _max;
+	drawn = false;
 }
 
 void Progress::set_progress(float _progress)
 {
 	if (_progress < min) {
-		return;
+		_progress = min;
 	}
 	if (_progress > max) {
-		return;
+		_progress = max;
 	}
 	progress = _progress;
+	drawn = false;
 }
