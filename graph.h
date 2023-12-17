@@ -65,8 +65,12 @@ class Graph : public Widget
 	}
 	void add_point(int i, float x, float y)
 	{
-		lines[i].add_point(x, y);
-		drawn = false;
+		if (0 <= i && i < GRAPH_MAX_LINES
+		    && xmin <= x && x <= xmax
+		    && ymin[i] <= y && y <= ymax[i]) {
+			lines[i].add_point(x, y);
+			drawn = false;
+		}
 	}
 
 

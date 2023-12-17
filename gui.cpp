@@ -129,7 +129,7 @@ Gui::handle_touch(Point2 pos)
 {
 	screen->handle_touch(pos);
 }
-	
+
 Point2
 Gui::calibrate(uint16_t x, uint16_t y)
 {
