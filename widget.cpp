@@ -14,8 +14,8 @@ Widget::is_at(Point2 _pos)
 	if (!size_known) {
 		calc_size();
 	}
-	return (position.x < _pos.x) && ((position.x + size.x) > _pos.x)
-	    && (position.y < _pos.y) && ((position.y + size.y) > _pos.y);
+	return (position.x + 2 < _pos.x) && ((position.x + size.x - 2) > _pos.x)
+	    && (position.y + 2 < _pos.y) && ((position.y + size.y - 2) > _pos.y);
 }
 
 Rect

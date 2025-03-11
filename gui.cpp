@@ -101,20 +101,22 @@ Gui::loop(void)
 	/* check, if screen change was scheduled */
 	if (next_screen_index != screen_index) {
 		do_change();
+		return;
 	}
 
 	/* check touchpad */
 	Point2 pos;
 	touched = false;
 	if (tft.touched()) {
+		uint16_t x, y;
+		tft.touchRead(&x, &y);
 		if ((now - last_touched) < touch_interval) {
+			/* and do nothing else */
 		} else {
-			uint16_t x, y;
-			tft.touchRead(&x, &y);
 			pos = calibrate(x, y);
 			touched = true;
-			last_touched = now;
 		}
+		last_touched = now;
 	}
 
 	if (touched) {
